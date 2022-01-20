@@ -1,8 +1,9 @@
-import { BrowserRouter, Link, Routes, Route } from 'react-router-dom'
+import React, {Component} from 'react';
+import { BrowserRouter, Link, Routes, Route, Switch} from 'react-router-dom'
 import './App.css';
 import Pages from './routes';
 
-const [Cart, Checkout, Products] = Pages
+const [Cart, Checkout, Products, Login, Logout, Admin] = Pages
 
 function App() {
   return (
@@ -13,13 +14,19 @@ function App() {
           paddingBottom: "1rem"
         }}
       >
-        <Link to="/products">Products</Link> 
-        <Link to="/cart">Cart</Link>
+
+        <Link to="/products"> Products</Link> 
+        <Link to="/cart"> Cart</Link>
+        <Link to="/login"> Login</Link>
       </nav>
       <Routes>
         <Route path="products" element={<Products />}/>
         <Route path="cart" element={<Cart />}/>
+        <Route path="login" element={<Login />}/>
+        <Route path="logout" element={<Logout />}/>
+        <Route path="admin" element={<Admin />}/>
       </Routes>
+
     </BrowserRouter>
   );
 }
