@@ -15,10 +15,12 @@ function App() {
       >
         <Link to="/products">Products</Link> 
         <Link to="/cart">Cart</Link>
+        <Link to="/checkout">Checkout</Link>
       </nav>
       <Routes>
         <Route path="products" element={<Products />}/>
         <Route path="cart" element={<Cart />}/>
+        <Route path="checkout" element={<Checkout />}/>
       </Routes>
     </BrowserRouter>
   );
