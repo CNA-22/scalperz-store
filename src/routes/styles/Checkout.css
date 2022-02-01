@@ -1,5 +1,16 @@
-button{
+.confirmationButton{
     background-color: green;
     color: aliceblue;
     height: 50px;
+}
+.goBackButton{
+    background-color: gray;
+    color: aliceblue;
+    height: 50px;
+}
+#confirmationDiv{
+    display: none;
+}
+#purchaseDiv{
+    display: block;
 }
