@@ -64,7 +64,7 @@ const Checkout = () => {
  
   return (
       <div >
-          <body onload={handleCookie()}>
+          <div onLoad={handleCookie()}>
 
               <div id={'purchaseDiv'}>
      
@@ -80,7 +80,7 @@ const Checkout = () => {
                 </form>
 
                 <br></br>
-                <button class={'confirmationButton'} onClick={continu}>Confirm purchase</button>
+                <button className='confirmationButton' onClick={continu}>Confirm purchase</button>
               </div>
           
 
@@ -92,13 +92,13 @@ const Checkout = () => {
                     <textarea  rows={'7'} cols={'20'} value={inputAd1} readOnly />
                
                     <br></br>
-                    <input class={'confirmationButton'} type={'submit'} value={'Submit'}></input>
+                    <input className='confirmationButton' type={'submit'} value={'Submit'}></input>
                  </form>
 
-                 <button class={'goBackButton'} onClick={continu}>Go back</button>
+                 <button className='goBackButton' onClick={continu}>Go back</button>
 
               </div>  
-          </body>
+          </div>
       </div> 
   );
 }
