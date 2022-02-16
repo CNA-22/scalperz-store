@@ -19,12 +19,14 @@ function App() {
         <Link to="/products"> Products</Link> 
         <Link to="/cart"> Cart</Link>
         <Link to="/login"> Login</Link>
+        <Link to="/checkout">Checkout</Link>
       </nav>
       <Routes>
         <Route path="products" element={<Products />}/>
         <Route path="cart" element={<Cart />}/>
         <Route path="login" element={<Login />}/>
         <Route path="dashboard" element={<Dashboard />}/>
+        <Route path="checkout" element={<Checkout />}/>
       </Routes>
     </BrowserRouter>
   );
