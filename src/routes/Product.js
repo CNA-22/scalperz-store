@@ -1,8 +1,57 @@
 import './styles/Products.css'
 import { Link } from 'react-router-dom'
+const axios = require('axios')
+
+
+//this is run inside of addToCart right now, really just a placeholder, since the API will return an empty object and cannot be POSTed to
+//later, some kind of event would run this, so that it will show cart contents when needed
+const fetchCartContent = () => {
+    return axios.get("https://cna-cart-api.herokuapp.com/cart/1")
+          .then((response) => console.log("this is the current cart from API: ", response.data));
+        }
+
+
+let cartList = [];
+
 const addToCart = (product) => {
-    console.log("Added", product, "to cart");
+
+    fetchCartContent();
+
+    //this is a simple way of handling different results for the addToCart function
+    //if the URL includes the string "products", addToCart will add product to cart
+    //otherwise, it would delete it (TODO)
+    if(document.URL.includes("products")){
+
+        console.log("Added", product, "to cart");
+
+        cartList = cartList.concat(product);
+    
+        //console.log("This is an array containing the IDs of items that have been selected: ", cartList);
+        
+        //a cookie is created containing a JSON'd string with the id
+        document.cookie = JSON.stringify(cartList);
+    
+        //console.log("This is a cookie containing the array of IDs: ", document.cookie);
+     }
+     
+     else if(document.URL.includes("cart")){
+        console.log("this would remove ", product, " from cart list once fully implemented")
+     }
+
+    
+
+
+    //this part will throw up some CORS errors right now
+    const toAdd = { "pId": '1',
+                    "productAmount": 1,
+                    "userId": "2" };
+    axios.post('    https://cna-cart-api.herokuapp.com/cart', toAdd)
+        .then(response => this.setState({ articleId: response.data.id }));
+
+    
 }
+
+
 
 const generateStarRating = (n) => {
     n = Math.round(n*10)
