@@ -3,7 +3,8 @@ import { BrowserRouter, Link, Routes, Route, Switch} from 'react-router-dom'
 import './App.css';
 import Pages from './routes';
 
-const [Cart, Checkout, Products, Login, Logout, Admin] = Pages
+
+const [Cart, Checkout, Products, Login, Dashboard ] = Pages
 
 function App() {
   return (
@@ -23,10 +24,8 @@ function App() {
         <Route path="products" element={<Products />}/>
         <Route path="cart" element={<Cart />}/>
         <Route path="login" element={<Login />}/>
-        <Route path="logout" element={<Logout />}/>
-        <Route path="admin" element={<Admin />}/>
+        <Route path="dashboard" element={<Dashboard />}/>
       </Routes>
-
     </BrowserRouter>
   );
 }

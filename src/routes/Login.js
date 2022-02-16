@@ -1,73 +1,71 @@
-import { getDefaultNormalizer } from "@testing-library/react"
-import React from "react"
-import { Navigate , Link } from "react-router-dom"
+import React, { useState } from "react";
+import './styles/Login.css';
+import { useNavigate, Navigate } from 'react-router-dom';
+import axios from "axios";
+import { setUserSession } from "../Utils/Common";
 
-class Login extends React.Component{
-    constructor(props) {
-        super(props)
-        const token = localStorage.getItem("token")
 
-        let loggedIn = true  //loggedIn true, but...
-        if(token == null){ //if thers no token then loggedIn false 
-            loggedIn = false
+const Login = (props) => {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
+
+    const handleLogin = () => {
+        setError(null);
+        setLoading(true);
+
+        axios.post("https://cna22-user-service.herokuapp.com/users/login", {
+                email: email,
+                password: password 
+    }).then(response => { 
+        setLoading(false);
+        setUserSession(response.data.accessToken);
+        navigate("/dashboard")
+        //console.log("response >>>>" , response);
+    }).catch(error => {
+        setLoading(false);
+        if(error.response.status === 401 || error.response.status === 400){
+            setError("Username or Password is wrong");
+            //error.response.data.message
+        } else {
+            setError("Something went wrong. Please try again later.")
         }
+       //console.log("Something went wrong")
+    });
 
-        this.state={
-            email:'',
-            password:'',
-            loggedIn
-        }
-
-        this.onChange = this.onChange.bind(this)
-        this.submitForm = this.submitForm.bind(this)
-    }
-    
-
-
-    onChange(e){
-        this.setState({
-            [e.target.name]: e.target.value  //input.name is the value 
-        })
-    }
-
-    submitForm(e){
-        e.preventDefault()
-        const { email, password } = this.state
-        // the login magic 
-        if(email === "A@gmail.com" && password === "B") {
-            localStorage.setItem("token", "jrigegegegeigvks")
-            this.setState({
-                loggedIn: true
-            })
-        }
-
-    }
-
-
-    render() {
-        //checking if loggedIn is true 
-        if(this.state.loggedIn){
-            //navigating to the Admin page
-            return <Navigate to="/admin"/> 
-        }
-
-        return (
-            <div>
-                <h1>Login</h1>
-                <form onSubmit={this.submitForm}>
-                    <input type="email" name="email" placeholder="email" value={this.state.email} required onChange={this.onChange}/>
-                    <br/>
-                    <input type="password" name="password" placeholder="password" value={this.state.password} required onChange={this.onChange}/>
-                    <br/>
-                    <button onSubmit={this.onSubmit}>Log In</button>
-                </form>
-            </div>
-           
-        )
-
-    }
 }
 
-
+    return (
+        <div>
+          <h1> Login </h1> 
+           <div> 
+               Email <br />
+               <input 
+                type="text"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                />    
+           </div>
+           <div>
+               Password<br />
+               <input 
+                    type="password"
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
+                />
+           </div>  <br />
+           {error && <div className="error">{error}</div>}
+          <input 
+            className="button"
+            type="button"
+            value={loading ? "Loading..." : "Login" }
+            disabled={loading}
+            onClick={handleLogin}
+          />
+        </div>
+    )
+}
 
 export default Login;
