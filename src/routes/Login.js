@@ -22,7 +22,8 @@ const Login = (props) => {
     }).then(response => { 
         setLoading(false);
         setUserSession(response.data.accessToken);
-        navigate("/dashboard")
+        navigate('dashboard'); 
+        //<Navigate to="/dashboard" />;
         //console.log("response >>>>" , response);
     }).catch(error => {
         setLoading(false);

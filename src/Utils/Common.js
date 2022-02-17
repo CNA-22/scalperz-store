@@ -6,6 +6,6 @@
     sessionStorage.setItem('accessToken', token);
   }
 
-    export const removeUserSession = () => {
-      sessionStorage.removeItem('accessToken');
-    }
+  export const removeUserSession = () => {
+    sessionStorage.removeItem('accessToken');
+  }
