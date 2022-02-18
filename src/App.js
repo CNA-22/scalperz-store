@@ -6,8 +6,6 @@ import { getToken, removeUserSession } from "./Utils/Common";
 import {Button} from 'react-bootstrap';
 import "bootstrap/dist/css/bootstrap.min.css"
 
-
-
 const [Cart, Checkout, Products, Login] = Pages
 
 function PrivateRoute({ children }) {
@@ -22,7 +20,6 @@ function PublicRoute({ children }) {
 
 function App() {
   const [isLogged, setisLogged] = useState(false);
-
 
   useEffect(() => {
     checkStorage();
