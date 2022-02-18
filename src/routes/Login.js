@@ -21,9 +21,8 @@ const Login = (props) => {
     }).then(response => { 
         setLoading(false);
         setUserSession(response.data.accessToken);
-        navigate('/dashboard'); 
-        //<Navigate to="/dashboard" />;
-        //console.log("response >>>>" , response);
+        navigate('/products'); 
+        window.location.reload();
     }).catch(error => {
         setLoading(false);
         if(error.response.status === 401 || error.response.status === 400){
@@ -32,7 +31,6 @@ const Login = (props) => {
         } else {
             setError("Something went wrong. Please try again later.")
         }
-       //console.log("Something went wrong")
     });
 
 }
