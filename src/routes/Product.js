@@ -1,9 +1,7 @@
 import './styles/Products.css'
 import { Link } from 'react-router-dom'
 import { generateStarRating } from '../Utils/Common';
-const addToCart = (product) => {
-    console.log("Added", product, "to cart");
-}
+import CartButton from './Components/CartButton';
 
 
 const Product = ({name, price, desc, rating, imageUrl, id}) => {
@@ -22,7 +20,7 @@ const Product = ({name, price, desc, rating, imageUrl, id}) => {
             <p>{price}€</p>
             <p>{description}...<Link to={"/product/"+id}>read more</Link> </p>
             <p>{generateStarRating(rating)}</p>
-            <button className="product--button-cart" onClick={() => addToCart(id)}>Add to cart</button>        
+            <CartButton id={id}/>
         </div>
 
     </div>

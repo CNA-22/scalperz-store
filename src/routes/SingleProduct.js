@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useParams } from 'react-router'
 import { generateStarRating } from '../Utils/Common'
 import './styles/SingleProduct.css'
-import { addToCart } from '../Utils/Common'
+import CartButton from './Components/CartButton'
 
 const axios = require('axios')
 
@@ -23,7 +23,7 @@ const SingleProduct = () => {
                     <h1>{product.name}</h1>
                     <p>{generateStarRating(product.rating)}</p>
                     <p className="single-product--price">{product.price}€</p>
-                    <button className="product--button_cart" onClick={() => addToCart(product.pid)}>Add to cart</button>
+                    <CartButton id={id} />
                 </div>
                 <div className="single-product--image">
                     <img src={product.imageURLs[0]} />
