@@ -6,7 +6,7 @@ import { getToken, removeUserSession } from "./Utils/Common";
 import {Button} from 'react-bootstrap';
 import "bootstrap/dist/css/bootstrap.min.css"
 
-const [Cart, Checkout, Products, Login] = Pages
+const [Cart, Checkout, Products, Login, SingleProduct] = Pages
 
 function PrivateRoute({ children }) {
   const auth = getToken();
@@ -69,6 +69,14 @@ function App() {
             <PublicRoute>
               <Login />
             </PublicRoute>
+          }
+        />
+        <Route
+          path="product/:id"
+          element={
+            <PrivateRoute>
+              <SingleProduct />
+            </PrivateRoute>
           }
         />
         <Route

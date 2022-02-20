@@ -1,17 +1,10 @@
 import './styles/Products.css'
 import { Link } from 'react-router-dom'
+import { generateStarRating } from '../Utils/Common';
 const addToCart = (product) => {
     console.log("Added", product, "to cart");
 }
 
-const generateStarRating = (n) => {
-    n = Math.round(n*10)
-    let starRating = ""
-    for(let i=1; i<=10; i++){
-        starRating += (i <= n ? "★" : "☆")
-    }
-    return starRating
-}
 
 const Product = ({name, price, desc, rating, imageUrl, id}) => {
 
@@ -20,7 +13,7 @@ const Product = ({name, price, desc, rating, imageUrl, id}) => {
     <div className="product">
         <div className="product--image_wrapper">
             <Link to={"/product/"+id}>
-                <img src="https://via.placeholder.com/300x150" />
+                    <img src={imageUrl} />
             </Link>
             
         </div>
