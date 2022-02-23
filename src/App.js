@@ -10,7 +10,7 @@ const [Cart, Checkout, Products, Login, SingleProduct] = Pages
 
 function PrivateRoute({ children }) {
   const auth = getToken();
-  return auth ? children : <Navigate to="/login" />;
+  return auth ? children : <Navigate to="/" />;
 }
 
 function PublicRoute({ children }) {
@@ -45,7 +45,7 @@ function App() {
     <BrowserRouter>
       <nav>
         {!isLogged ? (
-          <NavLink to="/login"> </NavLink> 
+          <NavLink to="/"> </NavLink> 
         ) : (
         <Button onClick={logout} >Logout</Button>
         )}
@@ -53,19 +53,19 @@ function App() {
         {isLogged ? (
             <NavLink to="/products" className={({ isActive }) => "is-active" + (isActive ? " activated" : "not-active")}> Products</NavLink>
           ) : (
-            <NavLink to="/login"> </NavLink> 
+            <NavLink to="/"> </NavLink> 
           )
         }
         {isLogged ? (
             <NavLink  to="/checkout"  className={({ isActive }) => "is-active" + (isActive ? " activated" : "not-active")}>Checkout</NavLink >  
           ) : (
-            <NavLink to="/login"> </NavLink> 
+            <NavLink to="/"> </NavLink> 
           )
         }
         {isLogged ? (
             <NavLink  to="/cart"  className={({ isActive }) => "is-active" + (isActive ? " activated" : "not-active")}>Cart</NavLink >  
           ) : (
-            <NavLink to="/login"> </NavLink> 
+            <NavLink to="/"> </NavLink> 
           )
         }
 
@@ -73,7 +73,7 @@ function App() {
 
       <Routes>
         <Route
-          path="login"
+          path="/"
           element={
             <PublicRoute>
               <Login />
