@@ -1,3 +1,5 @@
+import { Cookies } from 'react-cookie';
+
   export const getToken = () => {
     return sessionStorage.getItem('accessToken') || null;
   }

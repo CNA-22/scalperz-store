@@ -5,7 +5,6 @@ const addToCart = (product) => {
     console.log("Added", product, "to cart");
 }
 
-
 const Product = ({name, price, desc, rating, imageUrl, id}) => {
 
     const description = desc.substr(0, 200)

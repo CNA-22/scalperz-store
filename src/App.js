@@ -1,5 +1,5 @@
 import React, {Component, useState, useEffect} from 'react';
-import { BrowserRouter, Link, Routes, Route, Switch, useNavigate, Navigate, NavLink, } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate, NavLink } from 'react-router-dom'
 import './App.css';
 import Pages from './routes';
 import { getToken, removeUserSession } from "./Utils/Common";
@@ -39,26 +39,35 @@ function App() {
     setisLogged(false);
   };
 
+
+
   return (
     <BrowserRouter>
-      <nav
-        style={{
-          borderBottom: "solid 1px",
-          paddingBottom: "1rem"
-        }}
-      >
+      <nav>
         {!isLogged ? (
-          <NavLink to="/login" > 
-              <Button>Login</Button>
-          </NavLink> 
+          <NavLink to="/login"> </NavLink> 
         ) : (
-          <Button onClick={logout} >Logout</Button>
+        <Button onClick={logout} >Logout</Button>
         )}
-
-        <NavLink to="/products" className={({ isActive }) => "is-active" + (isActive ? " activated" : "not-active")}> Products</NavLink> 
-        <NavLink  to="/cart"  className={({ isActive }) => "is-active" + (isActive ? " activated" : "not-active")}> Cart</NavLink >      
-        <NavLink  to="/checkout"  className={({ isActive }) => "is-active" + (isActive ? " activated" : "not-active")}>Checkout</NavLink >
-
+        
+        {isLogged ? (
+            <NavLink to="/products" className={({ isActive }) => "is-active" + (isActive ? " activated" : "not-active")}> Products</NavLink>
+          ) : (
+            <NavLink to="/login"> </NavLink> 
+          )
+        }
+        {isLogged ? (
+            <NavLink  to="/checkout"  className={({ isActive }) => "is-active" + (isActive ? " activated" : "not-active")}>Checkout</NavLink >  
+          ) : (
+            <NavLink to="/login"> </NavLink> 
+          )
+        }
+        {isLogged ? (
+            <NavLink  to="/cart"  className={({ isActive }) => "is-active" + (isActive ? " activated" : "not-active")}>Cart</NavLink >  
+          ) : (
+            <NavLink to="/login"> </NavLink> 
+          )
+        }
 
       </nav>
 
