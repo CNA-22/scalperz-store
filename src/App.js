@@ -39,8 +39,6 @@ function App() {
     setisLogged(false);
   };
 
-
-
   return (
     <BrowserRouter>
       <nav>
