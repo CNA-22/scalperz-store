@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import './styles/Login.css';
 import { useNavigate, Navigate } from 'react-router-dom';
 import axios from "axios";
+import {Button, Form} from 'react-bootstrap';
 import { setUserSession } from "../Utils/Common";
-
 
 const Login = (props) => {
     const [email, setEmail] = useState('');
@@ -15,15 +15,14 @@ const Login = (props) => {
     const handleLogin = () => {
         setError(null);
         setLoading(true);
-
         axios.post("https://cna22-user-service.herokuapp.com/users/login", {
                 email: email,
                 password: password 
     }).then(response => { 
         setLoading(false);
         setUserSession(response.data.accessToken);
-        navigate("/dashboard")
-        //console.log("response >>>>" , response);
+        navigate('/products'); 
+        window.location.reload();
     }).catch(error => {
         setLoading(false);
         if(error.response.status === 401 || error.response.status === 400){
@@ -32,38 +31,41 @@ const Login = (props) => {
         } else {
             setError("Something went wrong. Please try again later.")
         }
-       //console.log("Something went wrong")
     });
-
 }
 
     return (
-        <div>
-          <h1> Login </h1> 
-           <div> 
-               Email <br />
-               <input 
+        <div className="Login">
+          <Form>
+          <h1 className="Login"> Login </h1> 
+          <Form.Group size="lg" controlId="email">
+           <Form.Label>Email</Form.Label> <br />
+           <Form.Control  
                 type="text"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
-                />    
-           </div>
-           <div>
-               Password<br />
-               <input 
+                />   
+           </Form.Group>
+           <Form.Group size="lg" controlId="password">
+           <Form.Label>Password</Form.Label><br />
+           <Form.Control
                     type="password"
                     value={password}
                     onChange={e => setPassword(e.target.value)}
                 />
-           </div>  <br />
+            </Form.Group>
+           <br />
            {error && <div className="error">{error}</div>}
-          <input 
-            className="button"
-            type="button"
-            value={loading ? "Loading..." : "Login" }
-            disabled={loading}
-            onClick={handleLogin}
-          />
+           <div className="d-grid gap-2">
+           <Button block size="lg"
+                   type="submit"
+                   value={loading ? "Loading..." : "Login" }
+                   disabled={loading}
+                   onClick={handleLogin} >
+               Login
+           </Button>
+           </div>
+        </Form>
         </div>
     )
 }

@@ -1,18 +1,20 @@
 
+
 .error{
-    color: red;
+    color: #991919;
     margin-bottom: 10px;
+    font-style: italic;
 }
 
-.button {
-    background-color: grey; /* Green */
-    border: none;
-    color: white;
-    padding: 6px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    border-radius: 10px;
-    cursor: pointer;
+  @media all and (min-width: 480px) {
+    .Login {
+      padding: 50px 0;
+    }
+  
+    .Login form {
+      margin: 0 auto;
+      max-width: 320px;
+    }
   }
+
+

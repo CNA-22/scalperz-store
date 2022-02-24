@@ -1,0 +1,8 @@
+.product--button-cart{
+    background-color: #FF00F7;
+    border:none;
+    border-radius: 10px;
+    padding: 10px 15px;
+    color: #fff;
+    cursor: pointer;
+}
