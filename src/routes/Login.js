@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 import './styles/Login.css';
-import { useNavigate, Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import {Button, Form} from 'react-bootstrap';
-import { setUserSession } from "../Utils/Common";
+import { useCookies } from 'react-cookie';
 
 const Login = (props) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [cookies, setCookie] = useCookies(["user-session"]);
     const navigate = useNavigate();
 
     const handleLogin = () => {
@@ -20,7 +21,7 @@ const Login = (props) => {
                 password: password 
     }).then(response => { 
         setLoading(false);
-        setUserSession(response.data.accessToken);
+        setCookie("user-session", response.data.accessToken);
         navigate('/products'); 
         window.location.reload();
     }).catch(error => {
@@ -40,7 +41,7 @@ const Login = (props) => {
           <h1 className="Login"> Login </h1> 
           <Form.Group size="lg" controlId="email">
            <Form.Label>Email</Form.Label> <br />
-           <Form.Control  
+           <Form.Control
                 type="text"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
@@ -49,8 +50,8 @@ const Login = (props) => {
            <Form.Group size="lg" controlId="password">
            <Form.Label>Password</Form.Label><br />
            <Form.Control
-                    type="password"
-                    value={password}
+                    type="password" 
+                    value={password} 
                     onChange={e => setPassword(e.target.value)}
                 />
             </Form.Group>
