@@ -55,7 +55,7 @@ const Checkout = () => {
 
 //TODO: Få flera saker. 
   const cartInfoo=()=>{
-    axios.get(`https://cna-cart-api.herokuapp.com/cart/${userid} `,{//använd 2 om din id ej hittas i cart att se att koden funkar${userid}
+    axios.get(`https://cna-cart-api.herokuapp.com/cart/${userid}`,{//använd 2 om din id ej hittas i cart att se att koden funkar${userid}
       headers: {
         'Authorization': `Bearer ${access_token}` 
       }
@@ -63,6 +63,7 @@ const Checkout = () => {
       .then((result) => { 
 
         setProductId(result.data[0].pId)
+        console.log(result.data[0].pId)
         setCartProductName(result.data[0].productName)
         setCartProductAmount(result.data[0].productAmount)
         console.log(result.data[0].productAmount)
@@ -114,7 +115,7 @@ const Checkout = () => {
     }
     getPrice()
     
-    console.log(cartProductAmount)
+    console.log(cartProductId)
 
   //Hanterar submit
   const handleSubmit=(event)=>{
@@ -123,7 +124,7 @@ const Checkout = () => {
       
                   customerNumber: userid,
                   email:inputEmail,
-                  itemId: cookies.item_id,
+                  itemId: cartProductId,
                   address: inputAd1,
                   price: productPrice
     },{headers: {
@@ -144,7 +145,7 @@ const Checkout = () => {
       }
   }
  
-  
+
   return (
       <div >
           <div onLoad={handleCookie()}>
