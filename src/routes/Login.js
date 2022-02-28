@@ -13,7 +13,8 @@ const Login = (props) => {
     const [cookies, setCookie] = useCookies(["user-session"]);
     const navigate = useNavigate();
 
-    const handleLogin = () => {
+    const handleLogin = (e) => {
+        e.preventDefault()      
         setError(null);
         setLoading(true);
         axios.post("https://cna22-user-service.herokuapp.com/users/login", {
