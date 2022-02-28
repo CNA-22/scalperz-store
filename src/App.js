@@ -1,33 +1,38 @@
-import React, {Component, useState, useEffect} from 'react';
+import React, { useState, useEffect} from 'react';
 import { BrowserRouter, Routes, Route, Navigate, NavLink } from 'react-router-dom'
 import './App.css';
 import Pages from './routes';
-import { getToken, removeUserSession } from "./Utils/Common";
-import {Button} from 'react-bootstrap';
-import "bootstrap/dist/css/bootstrap.min.css"
+import { useCookies } from 'react-cookie';
+import {Button, Navbar, Nav} from 'react-bootstrap';
+import "bootstrap/dist/css/bootstrap.min.css";
 
 const [Cart, Checkout, Products, Login, SingleProduct] = Pages
 
-function PrivateRoute({ children }) {
-  const auth = getToken();
-  return auth ? children : <Navigate to="/" />;
-}
-
-function PublicRoute({ children }) {
-  const auth = getToken();
-  return !auth ? children : <Navigate to="/products" />;
-}
-
 function App() {
   const [isLogged, setisLogged] = useState(false);
+  const [cookies, setCookie, removeCookie] = useCookies(['user-session']);
 
+  const getCookieToken = () => {
+    return cookies["user-session"] || null;
+  }
+
+  function PrivateRoute({ children }) {
+    const auth = getCookieToken();
+    return auth ? children : <Navigate to="/" />;
+  }
+  
+  function PublicRoute({ children }) {
+    const auth = getCookieToken();
+    return !auth ? children : <Navigate to="/products" />;
+  }
+  
   useEffect(() => {
     checkStorage();
     return () => {};
   }, [isLogged]);
 
   function checkStorage() {
-    if (getToken()) {
+    if (getCookieToken()) {
       setisLogged(true);
     } else {
       setisLogged(false);
@@ -35,39 +40,51 @@ function App() {
   }
 
   const logout = () => {
-    removeUserSession();
+    removeCookie("user-session");
     setisLogged(false);
   };
 
+  
+
   return (
     <BrowserRouter>
-      <nav>
+    <Navbar bg="light" variant="light">
+    <Nav className="me-auto">
         {!isLogged ? (
-          <NavLink to="/"> </NavLink> 
+          <Nav.Link>
+            <NavLink to="/"> </NavLink> 
+          </Nav.Link>
         ) : (
         <Button onClick={logout} >Logout</Button>
         )}
-        
+
         {isLogged ? (
-            <NavLink to="/products" className={({ isActive }) => "is-active" + (isActive ? " activated" : "not-active")}> Products</NavLink>
+          <Nav.Link>
+            <NavLink to="/products" className={({ isActive }) => "is-active" + (isActive ? " activated" : "not-active")}>Products</NavLink>
+          </Nav.Link>
           ) : (
             <NavLink to="/"> </NavLink> 
           )
         }
         {isLogged ? (
+          <Nav.Link>
             <NavLink  to="/checkout"  className={({ isActive }) => "is-active" + (isActive ? " activated" : "not-active")}>Checkout</NavLink >  
+          </Nav.Link>
           ) : (
             <NavLink to="/"> </NavLink> 
           )
         }
         {isLogged ? (
+          <Nav.Link>
             <NavLink  to="/cart"  className={({ isActive }) => "is-active" + (isActive ? " activated" : "not-active")}>Cart</NavLink >  
+          </Nav.Link>
           ) : (
             <NavLink to="/"> </NavLink> 
           )
         }
 
-      </nav>
+        </Nav>
+      </Navbar>
 
       <Routes>
         <Route
@@ -116,4 +133,3 @@ function App() {
 }
 
 export default App;
-
