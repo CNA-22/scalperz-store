@@ -6,7 +6,7 @@ const axios = require('axios')
 //this is run inside of addToCart right now, really just a placeholder, since the API will return an empty object and cannot be POSTed to
 //later, some kind of event would run this, so that it will show cart contents when needed
 const fetchCartContent = () => {
-    return axios.get("https://cna-cart-api.herokuapp.com/cart/1")
+    return axios.get("https://cna-cart-api.herokuapp.com/cart/1", { headers: { Authorization: "Bearer token" }} )
           .then((response) => console.log("this is the current cart from API: ", response.data));
         }
 
@@ -42,11 +42,14 @@ const addToCart = (product) => {
 
 
     //this part will throw up some CORS errors right now
-    const toAdd = { "pId": '1',
+    //now it's JWT auth error
+    //from cart-service readme: MUST HAVE A HEADER CALLED "Authorization:" and has the value "Bearer token"
+    const toAdd = { "pId": product,
                     "productAmount": 1,
                     "userId": "2" };
-    axios.post('    https://cna-cart-api.herokuapp.com/cart', toAdd)
-        .then(response => this.setState({ articleId: response.data.id }));
+    axios.post('https://cna-cart-api.herokuapp.com/cart', {headers: { Authorization: 'Bearer token'}}, toAdd)
+        //.then(response => this.setState({ articleId: response.data.id }))
+        ;
 
     
 }
