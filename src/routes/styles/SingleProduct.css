@@ -1,0 +1,39 @@
+.single-product{
+    width: 1000px;
+    margin: 0 auto;
+}
+
+.single-product--header{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin: 40px 0;
+}
+
+.single-product--info{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.single-product--info h1{
+    font-weight: bold;
+}
+
+.single-product--price{
+    font-size: 1.5em;
+}
+
+.single-product--info button{
+    margin-right: auto;
+}
+
+.single-product--image img{
+    width: 100%;
+}
+
+@media only screen and (max-width: 1000px){
+    .single-product{
+        width: 94%;
+        margin: 0 3%
+    }
+}

@@ -1,7 +1,8 @@
 import './styles/Products.css'
 import { Link } from 'react-router-dom'
+import { generateStarRating } from '../Utils/Common';
+import CartButton from './Components/CartButton';
 const axios = require('axios')
-
 
 //this is run inside of addToCart right now, really just a placeholder, since the API will return an empty object and cannot be POSTed to
 //later, some kind of event would run this, so that it will show cart contents when needed
@@ -65,6 +66,7 @@ const generateStarRating = (n) => {
     return starRating
 }
 
+
 const Product = ({name, price, desc, rating, imageUrl, id}) => {
 
     const description = desc.substr(0, 200)
@@ -72,7 +74,7 @@ const Product = ({name, price, desc, rating, imageUrl, id}) => {
     <div className="product">
         <div className="product--image_wrapper">
             <Link to={"/product/"+id}>
-                <img src="https://via.placeholder.com/300x150" />
+                    <img src={imageUrl} />
             </Link>
             
         </div>
@@ -81,7 +83,7 @@ const Product = ({name, price, desc, rating, imageUrl, id}) => {
             <p>{price}€</p>
             <p>{description}...<Link to={"/product/"+id}>read more</Link> </p>
             <p>{generateStarRating(rating)}</p>
-            <button className="product--button-cart" onClick={() => addToCart(id)}>Add to cart</button>        
+            <CartButton id={id}/>
         </div>
 
     </div>
