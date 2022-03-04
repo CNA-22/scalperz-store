@@ -1,10 +1,5 @@
-import getCookieToken from '../App';
-import getAccessToken from '../App';
-import token from '../App';
-import userid from '../App';
 const axios = require('axios');
-//const userid = getCookieToken();
-//const access_token = getCookieToken();
+
 
 
 
@@ -20,25 +15,17 @@ export const generateStarRating = (n) => {
 
 export const addToCart = (id) => {
 
-  //const token = getAccessToken();
-
-  //var what = fetchCartContent();
-
   var theToken = sessionStorage.getItem("accessToken");
   var theUser = sessionStorage.getItem("user");
 
-  console.log("Added", id, "to cart! ", theToken);
-  console.log(theUser);
-  // const userid = getCookieToken();
-  //const access_token = getCookieToken();
+  //console.log("Added", id, "to cart! ", theToken);
+  //console.log(theUser);
   let idText = id.toString();
 
 
   const toAdd = { "pId": idText,
                   "productAmount": 1,
                   "userId": theUser};
-
-  console.log(toAdd);
 
   axios.post(`https://cna-cart-api.herokuapp.com/cart`, toAdd, {
       headers: {
@@ -49,16 +36,64 @@ export const addToCart = (id) => {
   .then((response) => console.log("this is the current cart being POSTed: ", response.data));
 }
 
+export const removeAllFromCart = () => {
+
+  var theToken = sessionStorage.getItem("accessToken");
+  var theUser = sessionStorage.getItem("user");
+
+  const toData = {
+    "userId": theUser
+  };
+  
+
+  axios.delete(`https://cna-cart-api.herokuapp.com/cart`, toData, {
+    headers: {
+      Authorization: `Bearer ${theToken}`
+    }
+  })
+  .then((response) => console.log("delete all attempt: ", response.data))
+}
+
+export const removeOneFromCart = (pid) => {
+
+  console.log(pid)
+
+  let pidText = pid.toString();
+
+  var theToken = sessionStorage.getItem("accessToken");
+  var theUser = sessionStorage.getItem("user");
+
+  const toRemove = {
+    "pId": pidText,
+    "userId": theUser,
+    "productAmount": 1
+};
+
+console.log("user: ", theUser)
+
+  axios.delete(`https://cna-cart-api.herokuapp.com/cart`, toRemove, {
+    headers: {
+      Authorization: `Bearer ${theToken}`
+    }
+  })
+  .then((response) => console.log("single delete attempt: ", response.data))
+}
+
+
+
 export const fetchCartContent = () => {
 
    var theToken = sessionStorage.getItem("accessToken");
    var theUser = sessionStorage.getItem("user");
 
 
-  return axios.get(`https://cna-cart-api.herokuapp.com/cart/${theUser}`, {
+  const promise = axios.get(`https://cna-cart-api.herokuapp.com/cart/${theUser}`, {
      headers: {
        Authorization: `Bearer ${theToken}`
      }
   })
-        .then((response) => console.log("this is the current cart GET: ", response.data));
+  const dataPromise = promise.then((response) => response.data)
+
+  return dataPromise
+    //    .then((response) => console.log("this is the current cart GET: ", response.data))
       }

@@ -1,11 +1,10 @@
 import './styles/Products.css'
 import { Link } from 'react-router-dom'
 import { generateStarRating } from '../Utils/Common';
-import CartButton from './Components/CartButton';
-//import getCookieToken from '../App';
-//const axios = require('axios');
+import RemoveOneButton from './Components/RemoveOneCartButton';
 
-const Product = ({name, price, desc, rating, imageUrl, id}) => {
+
+const CartEntry = ({name, price, desc, rating, imageUrl, id, quantity, pid}) => {
 
     //const description = desc.substr(0, 200)
     return(
@@ -18,10 +17,11 @@ const Product = ({name, price, desc, rating, imageUrl, id}) => {
         </div>
         <div className="product--info">
             <h1><Link to={"/product/"+id}>{name}</Link></h1>
+            <p>Currently in cart: {quantity}</p>
             <p>{price}€</p>
             <p>{desc}...<Link to={"/product/"+id}>read more</Link> </p>
             <p>{generateStarRating(rating)}</p>
-            <CartButton id={id}/>
+            <RemoveOneButton pid={pid}/>
         </div>
 
     </div>
@@ -29,4 +29,4 @@ const Product = ({name, price, desc, rating, imageUrl, id}) => {
 
 }
 
-export default Product
+export default CartEntry
