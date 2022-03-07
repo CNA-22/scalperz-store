@@ -49,11 +49,11 @@ export const removeAllFromCart = () => {
       Authorization: `Bearer ${theToken}`
     }
     ,
-    body: {
-       "userId": "620cbc0613adc765696a552b"
+    data: {
+       "userId": theUser
      }
   })
-  .then((response) => console.log("delete all attempt: ", response))
+  .then((response) => console.log("delete all attempt: ", response.data))
 }
 
 export const removeOneFromCart = (pid) => {
@@ -73,12 +73,12 @@ export const removeOneFromCart = (pid) => {
 
 console.log("user: ", theUser)
 
-  axios.delete(`https://cna-cart-api.herokuapp.com/cart/`, {
+  axios.delete(`https://cna-cart-api.herokuapp.com/cart/#${pid}`, {
     headers: {
       Authorization: `Bearer ${theToken}`
     },
-    body: {
-      "pId": pidText,
+    data: {
+     // "pId": pidText,
       "userId": theUser,
       "productAmount": 1
     }
