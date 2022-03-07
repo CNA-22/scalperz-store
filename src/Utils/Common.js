@@ -1,9 +1,5 @@
 const axios = require('axios');
 
-
-
-
-
 export const generateStarRating = (n) => {
     n = Math.round(n*10)
     let starRating = ""
@@ -41,18 +37,23 @@ export const removeAllFromCart = () => {
   var theToken = sessionStorage.getItem("accessToken");
   var theUser = sessionStorage.getItem("user");
 
-  // const toData = {
-  //   "userId": theUser
-  // };
+  let usertext = theUser.toString()
+
+  const toData = {
+    "userId": theUser
+  };
   
 
-  // axios.delete(`https://cna-cart-api.herokuapp.com/cart`, toData, {
-    axios.delete(`https://cna-cart-api.herokuapp.com/cart/${theUser}`, {
+  axios.delete(`https://cna-cart-api.herokuapp.com/cart/`, {
     headers: {
       Authorization: `Bearer ${theToken}`
     }
+    ,
+    body: {
+       "userId": "620cbc0613adc765696a552b"
+     }
   })
-  .then((response) => console.log("delete all attempt: ", response.data))
+  .then((response) => console.log("delete all attempt: ", response))
 }
 
 export const removeOneFromCart = (pid) => {
@@ -72,9 +73,14 @@ export const removeOneFromCart = (pid) => {
 
 console.log("user: ", theUser)
 
-  axios.delete(`https://cna-cart-api.herokuapp.com/cart`, toRemove, {
+  axios.delete(`https://cna-cart-api.herokuapp.com/cart/`, {
     headers: {
       Authorization: `Bearer ${theToken}`
+    },
+    body: {
+      "pId": pidText,
+      "userId": theUser,
+      "productAmount": 1
     }
   })
   .then((response) => console.log("single delete attempt: ", response.data))

@@ -34,10 +34,6 @@ const Cart = () => {
                         axios.get("https://cna22-products-service.herokuapp.com/product/"+datas[k].pId)
                             .then((datum => {
 
-                                
-                                //console.log(datum.data.imageURL);
-                                //console.log(datum.data.imageURLs[0]);
-
                             const newItem = {
                                 id: datas[k].id,
                                 pid: datas[k].pId,
@@ -53,15 +49,20 @@ const Cart = () => {
 
                             prods.push(newItem);
                         //setCart(prods);
-                    }))
+                    })
+                    )
+                    //setCart(prods);
                     }
                     setCart(prods);
-                    //reloadThing();
 
                 }
-                //setCart(prods);
+                //reloadThing();
+
+                //setCart(prods); loopy
             }
+            
             )
+
       //  }
     //)
 
