@@ -37,13 +37,6 @@ export const removeAllFromCart = () => {
   var theToken = sessionStorage.getItem("accessToken");
   var theUser = sessionStorage.getItem("user");
 
-  let usertext = theUser.toString()
-
-  const toData = {
-    "userId": theUser
-  };
-  
-
   axios.delete(`https://cna-cart-api.herokuapp.com/cart/`, {
     headers: {
       Authorization: `Bearer ${theToken}`
@@ -102,5 +95,4 @@ export const fetchCartContent = () => {
   const dataPromise = promise.then((response) => response.data)
 
   return dataPromise
-    //    .then((response) => console.log("this is the current cart GET: ", response.data))
       }
