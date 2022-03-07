@@ -7,7 +7,7 @@ import CartButton from './Components/CartButton';
 
 const Product = ({name, price, desc, rating, imageUrl, id}) => {
 
-    //const description = desc.substr(0, 200)
+    const description = desc.substr(0, 200)
     return(
     <div className="product">
         <div className="product--image_wrapper">
@@ -19,7 +19,7 @@ const Product = ({name, price, desc, rating, imageUrl, id}) => {
         <div className="product--info">
             <h1><Link to={"/product/"+id}>{name}</Link></h1>
             <p>{price}€</p>
-            <p>{desc}...<Link to={"/product/"+id}>read more</Link> </p>
+            <p>{description}...<Link to={"/product/"+id}>read more</Link> </p>
             <p>{generateStarRating(rating)}</p>
             <CartButton id={id}/>
         </div>

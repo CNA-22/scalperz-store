@@ -1,8 +1,5 @@
 import { useState, useEffect } from "react"
-import Product from "./Product"
-import Products from "./Products"
 import { fetchCartContent } from "../Utils/Common";
-import SingleProduct from "./SingleProduct";
 import CartEntry from "./CartEntry";
 import EmptyCartButton from "./Components/EmptyCartButton";
 
@@ -12,91 +9,70 @@ const testdata = {"page":0,"pageSize":10,"actualSize":4,"totalPagesCount":1,"tot
 
 const Cart = () => {
     const [cartProducts, setCart] = useState([]);
+    const [rerender, setRerender] = useState(false);
 
     let prods = []
 
-    useEffect(() => {
+    const reloadThing = () => {
+        console.log("make it render");
+        setRerender({});
+    }
+
+
+    //useEffect(() => {
+
         fetchCartContent()
             .then(datas => {
-                prods = []
+                //prods = []
+
+                if(cartProducts.length === 0){
+
                 for(let k = 0; k < datas.length; k++){
-                    if(cartProducts.length === 0){
+
                         console.log(datas[k].pId);
 
                         axios.get("https://cna22-products-service.herokuapp.com/product/"+datas[k].pId)
                             .then((datum => {
-                            //console.log(datum)
 
-
+                                
+                                //console.log(datum.data.imageURL);
+                                //console.log(datum.data.imageURLs[0]);
 
                             const newItem = {
                                 id: datas[k].id,
                                 pid: datas[k].pId,
                                 quantity: datas[k].productAmount,
-                                name: datum.data.name
+                                name: datum.data.name,
+                                desc: datum.data.description,
+                                rating: datum.data.rating,
+                                price: datum.data.price,
+                                imageUrl: datum.data.imageURLs[0],
+                                
                             };
 
 
                             prods.push(newItem);
-                        setCart(prods);
+                        //setCart(prods);
                     }))
                     }
+                    setCart(prods);
+                    //reloadThing();
+
                 }
-            })
-        }
-    )
-    //     .then(datas => {
+                //setCart(prods);
+            }
+            )
+      //  }
+    //)
 
-    //         prods = []
+    const productEls = cartProducts.map(e => <CartEntry key={e.pid} pid={e.pid} id={e.id} name={e.name} desc={e.desc} price={e.price} rating={e.rating} imageUrl={e.imageUrl} quantity={e.quantity} />)
 
-    //         console.log(datas);
-     
-    //         for(let j = 0; j < datas.length; j++){
-
-    //             if(cartProducts.length === 0){
-
-    //             axios.get("https://cna22-products-service.herokuapp.com/product/"+datas[j].pId)
-    //             //.then((res) => 
-    //             .then((res) => console.log(res.data))
-    //             //setCart(res.data.items));
-
-    //             //  .then((res) => {
-    //             //      const newItem = {
-    //             //          id: res.data.pid,
-    //             //          name: res.data.name,
-    //             //          pid: res.data.pid,
-    //             //          price: res.data.price,
-    //             //          //quantity: res.data.pro
-
-    //             //      };
-    //             //      prods.push(newItem);
-
-    //             //         setCart(prods)
-    //                  //console.log(prods);
-
-
-    //             // })
-
-
-    //             }
-    //     }
-
-
-    // })
-
-
-
-    
-
-
-    //const productEls = cartProducts.map(e => <Product key={e.id} pid={e.pid} name={e.name} desc={e.desc} />)
-    const productEls = cartProducts.map(e => <CartEntry key={e.pid} pid={e.pid} id={e.id} name={e.name} desc={e.description} price={e.price} rating={e.rating} imageUrl={e.imageURLs} quantity={e.quantity} />)
-
-    //{productEls}
     return(
         <section className="products">
             <h1>Hello Cart</h1>
             <EmptyCartButton />
+            <button value="Test reload" onClick={reloadThing}> Reload</button>
+
             {productEls}
 
         </section>

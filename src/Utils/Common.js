@@ -41,12 +41,13 @@ export const removeAllFromCart = () => {
   var theToken = sessionStorage.getItem("accessToken");
   var theUser = sessionStorage.getItem("user");
 
-  const toData = {
-    "userId": theUser
-  };
+  // const toData = {
+  //   "userId": theUser
+  // };
   
 
-  axios.delete(`https://cna-cart-api.herokuapp.com/cart`, toData, {
+  // axios.delete(`https://cna-cart-api.herokuapp.com/cart`, toData, {
+    axios.delete(`https://cna-cart-api.herokuapp.com/cart/${theUser}`, {
     headers: {
       Authorization: `Bearer ${theToken}`
     }
