@@ -12,10 +12,10 @@ export const generateStarRating = (n) => {
 export const addToCart = (id) => {
 
   var theToken = sessionStorage.getItem("accessToken");
-  var theUser = sessionStorage.getItem("user");
+  var theUser = sessionStorage.getItem("user-session");
 
   //console.log("Added", id, "to cart! ", theToken);
-  //console.log(theUser);
+  console.log(theUser, " ", theToken);
   let idText = id.toString();
 
 
@@ -35,7 +35,7 @@ export const addToCart = (id) => {
 export const removeAllFromCart = () => {
 
   var theToken = sessionStorage.getItem("accessToken");
-  var theUser = sessionStorage.getItem("user");
+  var theUser = sessionStorage.getItem("user-session");
 
   axios.delete(`https://cna-cart-api.herokuapp.com/cart/`, {
     headers: {
@@ -47,6 +47,7 @@ export const removeAllFromCart = () => {
      }
   })
   .then((response) => console.log("delete all attempt: ", response.data))
+  .then(() => window.location.reload());
 }
 
 export const removeOneFromCart = (pid) => {
@@ -56,7 +57,9 @@ export const removeOneFromCart = (pid) => {
   let pidText = pid.toString();
 
   var theToken = sessionStorage.getItem("accessToken");
-  var theUser = sessionStorage.getItem("user");
+  var theUser = sessionStorage.getItem("user-session");
+
+  
 
   const toRemove = {
     "pId": pidText,
@@ -77,6 +80,7 @@ console.log("user: ", theUser)
     }
   })
   .then((response) => console.log("single delete attempt: ", response.data))
+  .then(() => window.location.reload());
 }
 
 
@@ -84,7 +88,7 @@ console.log("user: ", theUser)
 export const fetchCartContent = () => {
 
    var theToken = sessionStorage.getItem("accessToken");
-   var theUser = sessionStorage.getItem("user");
+   var theUser = sessionStorage.getItem("user-session");
 
 
   const promise = axios.get(`https://cna-cart-api.herokuapp.com/cart/${theUser}`, {
@@ -96,3 +100,11 @@ export const fetchCartContent = () => {
 
   return dataPromise
       }
+
+
+      //Hantera token
+export const tokenToJson= (token) =>{
+  var base64Url = token.split('.')[1];
+  var base64 = base64Url.replace('-', '+').replace('_', '/');
+  return JSON.parse(atob(base64));
+}
