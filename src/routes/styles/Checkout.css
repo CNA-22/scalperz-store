@@ -1,21 +1,21 @@
 .confirmationButton{
-    background-color: green;
+    background-color: #61dafb;
     color: aliceblue;
     height: 50px;
     width: 100px;
     
 }
-.goBackButton{
-    background-color: gray;
-    color: aliceblue;
-    height: 50px;
-    width: 100px;
-}
+
 #confirmationDiv{
     display: none;
-    padding-left: 40%;
+    padding-left: 35%;
 }
 #purchaseDiv{
     display: block;
-    padding-left: 40%;
+    padding-left: 35%;
+}
+input{
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #000000;
 }

@@ -10,6 +10,7 @@ const axios = require('axios');
 
 const Checkout = () => {
 
+
   //Får JWT
   const getCookieToken = () => {
     return cookies["user-session"] || null;
@@ -21,114 +22,190 @@ const Checkout = () => {
   const [inputEmail, setInputEmail] = useState('');
   const [inputAd1, setInputAd1] = useState('');
   const [userid, setUserid] = useState('');
-  const [useremail, setUseremail] = useState('');
+  const [useremail, setUseremail] = useState();
 
   //Cart saker
-  const [cartProductId, setProductId]=useState('');
-  const [cartProductName, setCartProductName]=useState();
-  const [cartProductAmount, setCartProductAmount]=useState();
+  const [cartProductId, setProductId]=useState([]);
+ 
+  const [cartProductAmount, setCartProductAmount]=useState([]);
 
   //Produkt saker
-  const [productPrice, setPrice] = useState('');
- 
+  const [productPrice, setPrice] = useState([]);
+  const [cartProductName, setCartProductName]=useState([]);
+
+  const [totalPrice, setTotal] = useState();
+
+  const [proData, setproData]=useState([]);
   
+/*
+  axios.get("https://quiet-meadow-01451.herokuapp.com/orders",{
+  headers: {
+  'Authorization': `Bearer ${access_token}` 
+  }}).then((res)=>{console.log(res.data)})
+*/
   //Få användar info
   //https://flaviocopes.com/axios-send-authorization-header/
   const callUser=()=>{
+    
       axios.get('https://cna22-user-service.herokuapp.com/users/data', {
       headers: {
         'Authorization': `Bearer ${access_token}`
       }
-      })
-      .then((res) => {
+      }).then((res) => {
        
         setUserid(tokenToJson(access_token).sub)
         setUseremail(tokenToJson(access_token).email)
-        findAdress(useremail,res.data)
+       //if(inputAd1.length===0){ findAdress(useremail,res.data)}
+       findAdress(useremail,res.data)
 
       })
       .catch((error) => {
       console.error(error)
       })
+    
   }
-  callUser()
 
-//TODO: Få flera saker. 
+
+  
+//Hantera token
+const tokenToJson= (token) =>{
+  var base64Url = token.split('.')[1];
+  var base64 = base64Url.replace('-', '+').replace('_', '/');
+  return JSON.parse(atob(base64));
+}
+
+//Hitta användar address
+const findAdress=(mail,data)=>{
+  
+    for(var i=0;i<data.length;i++){
+      if(mail===data[i].email){
+        console.log(data[i].email)
+        setInputEmail(data[i].email)
+      setInputAd1(data[i].adress+' '+data[i].zip)
+      }
+    }
+  
+}
+console.log(userid)
+callUser()
+
+
+  /*  axios.get("https://quiet-meadow-01451.herokuapp.com/orders",{
+      headers: {
+        'Authorization': `Bearer ${access_token}`
+      }})
+      .then((res) => {
+        console.log(res.data)
+      })*/
+
+
+const proId=[]
+const amountD=[]
+const pri=[]
+const na=[]
+
   const cartInfoo=()=>{
+
+   if(cartProductAmount.length===0){
     axios.get(`https://cna-cart-api.herokuapp.com/cart/${userid}`,{//använd 2 om din id ej hittas i cart att se att koden funkar${userid}
       headers: {
         'Authorization': `Bearer ${access_token}` 
       }
       })
       .then((result) => { 
-
-        setProductId(result.data[0].pId)
-        console.log(result.data[0].pId)
-        setCartProductName(result.data[0].productName)
-        setCartProductAmount(result.data[0].productAmount)
-        console.log(result.data[0].productAmount)
-
+        //cartInforma(result.data)
+        const data=result.data
+        for(let i=0; i<data.length;i++){
+          proId.push(data[i].pId)
+          //console.log(proId)
+          amountD.push(data[i].productAmount)
+          
+        }
+        console.log(proId)
+        //setProductId(proId)
+    
+      //  if (cartProductName.length===0){getPrice(proId,amountD)}
+      getPrice(proId,amountD)
+        setProductId(proId)
+        setCartProductAmount(amountD)
       })
       .catch((error) => {
-      console.error(error)
+        console.error(error)
       })
-    }
-    
+   }
+  } 
+
+  //if(cartProductAmount.length==0){cartInfoo()}
   cartInfoo()
 
-
-//Hantera token
-  const tokenToJson= (token) =>{
-    var base64Url = token.split('.')[1];
-    var base64 = base64Url.replace('-', '+').replace('_', '/');
-    return JSON.parse(atob(base64));
-  }
+/*  const cartInforma=(data)=>{
   
-//Hitta användar address
-  const findAdress=(mail,data)=>{
-      for(var i=0;i<data.length;i++){
-        if(mail===data[i].email){
-          console.log(data[i].email)
-          setInputEmail(data[i].email)
-        setInputAd1(data[i].adress+' '+data[i].zip)
-        }
+    for(let i=0; i<data.length;i++){
+      proId.push(data[i].pId)
+      //console.log(proId)
+      amountD.push(data[i].productAmount)
+      
+    }
+    console.log(proId)
+    //setProductId(proId)
+
+    getPrice(proId,amountD)
+    setProductId(proId)
+    setCartProductAmount(amountD)
+  //setCartProductName( getPrice(proId,amountD))
+}
+*/
+  //Få länk till producter
+  const getPrice= (proId,proAm)=>{
+    if (cartProductName.length===0){
+      axios.get(`https://cna22-products-service.herokuapp.com/products`,{//${proId[j]},{// Ändra till cookies.item_id om något ej funkar att se att man faktist får info t.e.x när cart ej har saken i sig
+      headers: {
+        'Authorization': `Bearer ${access_token}` 
       }
-  }
-
-
-//Cookie för om man behöver testa något eller sakerna vid test skedje ej finns
- const handleCookie=()=> {
-    setCookie("item_id", "394739127971", {
-      path: "/"
-    });
-    setCookie("productAmount", "3", {
-      path: "/"
-    });
-  }
-
-  //Räkna ut priset
-  const getPrice=()=>{
-    axios.get(`https://cna22-products-service.herokuapp.com/product/${cartProductId}`)// Ändra till cookies.item_id om något ej funkar att se att man faktist får info t.e.x när cart ej har saken i sig
-      .then((res)=>{
-        setPrice(res.data.price*cartProductAmount)//
+      }).then((res)=>{
+        getNamesAndPrices(res.data.items,proId,proAm)
+        
+        
       })
     }
-    getPrice()
-    
-    console.log(cartProductId)
+  }
+ // setCartProductName(cartProductName=>[ cartProductName, na])
 
+
+ const getNamesAndPrices=(data,produId,amount)=>{
+  
+    let total=0
+    for(var i=0; i<data.length;i++){
+      if(data[i].pid===produId[i]){
+        na.push(data[i].name)
+        pri.push(Number(data[i].price*amount[i]))
+        total=Number(total)+(Number(data[i].price)*Number(amount[i]))
+      }
+    }
+    console.log(pri)
+    setCartProductName(na)
+    console.log(cartProductName.length)
+    setPrice(pri)
+    setTotal(total)
+  
+ }
+
+
+ 
   //Hanterar submit
-  const handleSubmit=(event)=>{
+  const onSubmit=(event)=>{
     event.preventDefault();
-    axios.post("https://quiet-meadow-01451.herokuapp.com/orders",{
-      
-                  customerNumber: userid,
-                  email:inputEmail,
-                  itemId: cartProductId,
-                  address: inputAd1,
-                  price: productPrice
-    },{headers: {
-      'Authorization': `Bearer ${access_token}` 
+
+    for(var j=0;j<cartProductId.length; j++)
+      axios.post("https://quiet-meadow-01451.herokuapp.com/orders",{
+        
+                    customerNumber: userid,
+                    email:inputEmail,
+                    itemId: cartProductId[j],
+                    address: inputAd1,
+                    price: productPrice[j]
+      },{headers: {
+        'Authorization': `Bearer ${access_token}` 
     }})
    
     //Confirmation info
@@ -144,18 +221,16 @@ const Checkout = () => {
          inputForm.style.display = 'block';
       }
   }
- 
 
   return (
       <div >
-          <div onLoad={handleCookie()}>
-
+          <div>
               <div id={'purchaseDiv'}>
-     
                 <p>Delivery information</p>
                 <p>If this is the first time being on this site, please reload to get the cookie information</p>
-                <p>Product: {cartProductName}</p>
-                <form name={'confirmationForm'} onSubmit={handleSubmit}>
+                <b>Product(s):</b> {cartProductName+'\n'}
+                <br></br>
+                <form name={'confirmationForm'} onSubmit={onSubmit}>
                     <h3>Email</h3>   
                     <input value={inputEmail} readOnly  />
                     <h3>Address</h3>
@@ -164,23 +239,23 @@ const Checkout = () => {
                     <br></br>
                     <input className='confirmationButton' type={'submit'} value={'Submit'}></input>
                  </form>
-                <p>Price: {productPrice}</p>
+                <p>Price: {totalPrice} EUR</p>
                 <br></br>
              
               </div>
           
 
               <div id={'confirmationDiv'} >
-                <p>The purchase was sugsessful!</p>
-                <p>We has sent the invoice to: {inputEmail} </p>
-                <p>Delivered to: {inputAd1}</p>
-                <p>Products: {cartProductName} </p>
-                <p>Price: {productPrice}</p>
+                <p><b>We has sent the invoice to:</b> {inputEmail} </p>
+                <p><b>Delivering to:</b>  {inputAd1}</p>
+                <p><b>Products:</b>  {cartProductName+"\n"} </p>
+                <p><b>Price:</b>  {totalPrice}</p>
               </div>  
           </div>
       </div> 
   );
-}
+ 
 
+}
 
 export default Checkout
