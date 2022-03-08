@@ -23,25 +23,26 @@ const Cart = () => {
       sessionStorage.setItem("accessToken", access_token);
     //sessionStorage.setItem("user", userid);
 
-    let prods = []
+ 
 
     const reloadThing = () => {
         console.log("make it render");
         setRerender({});
     }
-
+    console.log(cartProducts)
+    if(cartProducts.length === 0){
         fetchCartContent()
             .then(datas => {
 
                 if(cartProducts.length === 0){
-
+                let prods = []
                 for(let k = 0; k < datas.length; k++){
 
-                        console.log(datas[k].pId);
+                        console.log(k, datas[k].pId);
 
                         axios.get("https://cna22-products-service.herokuapp.com/product/"+datas[k].pId)
                             .then((datum => {
-
+                            console.log(datum)
                             const newItem = {
                                 id: datas[k].id,
                                 pid: datas[k].pId,
@@ -63,10 +64,10 @@ const Cart = () => {
 
                 }
             }
-            
             )
+        }
 
-
+    
     const productEls = cartProducts.map(e => <CartEntry key={e.pid} pid={e.pid} id={e.id} name={e.name} desc={e.desc} price={e.price} rating={e.rating} imageUrl={e.imageUrl} quantity={e.quantity} />)
 
     return(
