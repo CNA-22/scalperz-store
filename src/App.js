@@ -1,20 +1,46 @@
-import React, { useState, useEffect} from 'react';
+import {React, useState, useEffect} from 'react';
 import { BrowserRouter, Routes, Route, Navigate, NavLink } from 'react-router-dom'
 import './App.css';
 import Pages from './routes';
 import { useCookies } from 'react-cookie';
 import {Button, Navbar, Nav} from 'react-bootstrap';
 import "bootstrap/dist/css/bootstrap.min.css";
+import { tokenToJson } from './Utils/Common';
+
+const axios = require('axios');
+
 
 const [Cart, Checkout, Products, Login, SingleProduct] = Pages
+
 
 function App() {
   const [isLogged, setisLogged] = useState(false);
   const [cookies, setCookie, removeCookie] = useCookies(['user-session']);
+  const [userid, setUserid] = useState('');
+
 
   const getCookieToken = () => {
     return cookies["user-session"] || null;
   }
+
+  //
+  const access_token=getCookieToken()
+  
+  const getUserId = () =>{
+    setUserid(tokenToJson(access_token).sub)
+  }
+
+  if(userid.length === 0){
+    getUserId();
+  }
+
+  sessionStorage.setItem("accessToken", access_token);
+  sessionStorage.setItem("user-session", userid);
+  //
+
+
+
+   
 
   function PrivateRoute({ children }) {
     const auth = getCookieToken();

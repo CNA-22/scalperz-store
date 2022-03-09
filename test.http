@@ -1,0 +1,6 @@
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MjBjYmMwNjEzYWRjNzY1Njk2YTU1MmIiLCJlbWFpbCI6ImZyb250ZW5kbG9naW5AY25hMjIuY29tIiwidXNlckxldmVsIjoidXNlciIsImlhdCI6MTY0NjY3Mjg0MiwiZXhwIjoxNjUxODU2ODQyfQ.vtESzhsKiBC2uQrWyo8lFN4vS_JrkVpmWJ0WQz5usqk
+
+GET https://cna-cart-api.herokuapp.com/cart/620cbc0613adc765696a552b
+Authorization: Bearer {{token}}
+
+###
