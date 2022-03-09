@@ -9,8 +9,9 @@ export const generateStarRating = (n) => {
     return starRating
 }
 
-export const addToCart = (id) => {
-
+export const addToCart = (id, active) => {
+  console.log(active)
+  if(!active) return 
   var theToken = sessionStorage.getItem("accessToken");
   var theUser = sessionStorage.getItem("user-session");
 

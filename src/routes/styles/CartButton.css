@@ -13,5 +13,6 @@
 
 .button--out-of-stock{
     background-color: #999;
-    color: #282828
+    color: #282828;
+    cursor: not-allowed!important;
 }

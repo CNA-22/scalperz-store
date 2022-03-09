@@ -2,11 +2,21 @@ import './styles/Products.css'
 import { Link } from 'react-router-dom'
 import { generateStarRating } from '../Utils/Common';
 import CartButton from './Components/CartButton';
-//import getCookieToken from '../App';
-//const axios = require('axios');
+import { useState } from 'react';
+const axios = require('axios');
+
 
 const Product = ({name, price, desc, rating, imageUrl, id}) => {
-    const inStock = ({inStock: 3}.inStock > 0) //hardcoded data until inventory service works again, this will be replaced by a request and a state
+    const [stock, setStock] = useState(0)
+    const token = sessionStorage.getItem("accessToken");
+
+    axios.get(("https://cna-inventory-service.herokuapp.com/products/" + id), {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }).then(data => {setStock(data.data.antal)})
+    
+    const inStock = (stock > 0) //hardcoded data until inventory service works again, this will be replaced by a request and a state
     const description = desc.substr(0, 200)
     return(
     <div className="product">

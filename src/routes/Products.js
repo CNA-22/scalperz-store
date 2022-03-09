@@ -20,7 +20,7 @@ const Products = () => {
     const productEls = products.map(e => <Product key={e.pid} id={e.pid}name={e.name} desc={e.description} price={e.price} rating={e.rating} imageUrl={e.imageURLs[0]} />)
     return(
         <section className="products">
-            <h1>Hello World</h1>
+            <h1>Products</h1>
         {productEls}
         </section>
     )
