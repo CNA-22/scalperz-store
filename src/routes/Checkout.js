@@ -31,7 +31,7 @@ const Checkout = () => {
   //Produkt saker
   const [productPrice, setPrice] = useState('');
  
-  
+
   //Få användar info
   //https://flaviocopes.com/axios-send-authorization-header/
   const callUser=()=>{
@@ -52,7 +52,7 @@ const Checkout = () => {
       })
   }
   callUser()
-
+console.log(userid)
 //TODO: Få flera saker. 
   const cartInfoo=()=>{
     axios.get(`https://cna-cart-api.herokuapp.com/cart/${userid}`,{//använd 2 om din id ej hittas i cart att se att koden funkar${userid}
@@ -64,7 +64,7 @@ const Checkout = () => {
 
         setProductId(result.data[0].pId)
         console.log(result.data[0].pId)
-        setCartProductName(result.data[0].productName)
+        //setCartProductName(result.data[0].productName)
         setCartProductAmount(result.data[0].productAmount)
         console.log(result.data[0].productAmount)
 
@@ -75,7 +75,7 @@ const Checkout = () => {
     }
     
   cartInfoo()
-
+console.log(cartProductId)
 
 //Hantera token
   const tokenToJson= (token) =>{
@@ -108,9 +108,14 @@ const Checkout = () => {
 
   //Räkna ut priset
   const getPrice=()=>{
-    axios.get(`https://cna22-products-service.herokuapp.com/product/${cartProductId}`)// Ändra till cookies.item_id om något ej funkar att se att man faktist får info t.e.x när cart ej har saken i sig
+    axios.get(`https://cna22-products-service.herokuapp.com/product/${cartProductId}`,{
+    headers: {
+      'Authorization': `Bearer ${access_token}` 
+    }
+    })
       .then((res)=>{
         setPrice(res.data.price*cartProductAmount)//
+        setCartProductName(res.data.name)
       })
     }
     getPrice()
@@ -152,9 +157,8 @@ const Checkout = () => {
 
               <div id={'purchaseDiv'}>
      
-                <p>Delivery information</p>
-                <p>If this is the first time being on this site, please reload to get the cookie information</p>
-                <p>Product: {cartProductName}</p>
+                
+                <p><b>Product:</b> {cartProductName}</p>
                 <form name={'confirmationForm'} onSubmit={handleSubmit}>
                     <h3>Email</h3>   
                     <input value={inputEmail} readOnly  />
@@ -164,18 +168,17 @@ const Checkout = () => {
                     <br></br>
                     <input className='confirmationButton' type={'submit'} value={'Submit'}></input>
                  </form>
-                <p>Price: {productPrice}</p>
+                <p><b>Price:</b> {productPrice}</p>
                 <br></br>
              
               </div>
           
 
               <div id={'confirmationDiv'} >
-                <p>The purchase was sugsessful!</p>
-                <p>We has sent the invoice to: {inputEmail} </p>
-                <p>Delivered to: {inputAd1}</p>
-                <p>Products: {cartProductName} </p>
-                <p>Price: {productPrice}</p>
+                <p><b>We has sent the invoice to:</b> {inputEmail} </p>
+                <p><b>Delivering to:</b> {inputAd1}</p>
+                <p><b>Products:</b> {cartProductName} </p>
+                <p><b>Price:</b> {productPrice}</p>
               </div>  
           </div>
       </div> 
